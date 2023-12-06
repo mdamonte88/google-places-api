@@ -46,5 +46,13 @@ python -m venv google-api-venv
 pip install -r requirements.txt
 ```
 
+6. Create API.KEY File to access to GoogleMaps
 
+Create the `API_KEY.txt` example:
+
+```
+<Key generated on Google Place>
+```
+
+6. Run the server
 pm2 start api.py --name locations.gomarket.com.uy --interpreter python3
