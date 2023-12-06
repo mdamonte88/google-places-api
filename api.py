@@ -1,7 +1,10 @@
 from flask import Flask, request
+from flask_cors import CORS
 from app.routes import stores_nearby, bars_nearby, footballfields_nearby, pharmacies_nearby
 
 app = Flask(__name__)
+CORS(app, resources={r"/locations/v1/api/*": {"origins": ["https://www.gomarket.com.uy", "https://localdashboard.gomarket.com.uy", "https://local.gomarket.com.uy"]}})
+
 app.config["DEBUG"] = False
 
 API_KEY = open('API_KEY.txt').read()
@@ -12,7 +15,10 @@ def home():
 
 @app.route('/locations/v1/api/health', methods=['GET'])
 def health():
-    return "El servidor está OK"
+    return {
+        "status": "ok",
+        "message": "The server is healthy."
+    }
 
 @app.route('/locations/v1/api/stores/near', methods=['GET'])
 def storesNearby():
