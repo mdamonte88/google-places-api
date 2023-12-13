@@ -5,6 +5,7 @@ from app.routes import stores_nearby, bars_nearby, footballfields_nearby, pharma
 app = Flask(__name__)
 CORS(app, resources={r"/locations/v1/api/*": {"origins": ["https://www.gomarket.com.uy", "https://localdashboard.gomarket.com.uy", "https://local.gomarket.com.uy"]}})
 
+
 app.config["DEBUG"] = False
 
 API_KEY = open('API_KEY.txt').read()
@@ -15,10 +16,11 @@ def home():
 
 @app.route('/locations/v1/api/health', methods=['GET'])
 def health():
-    return {
+    response = {
         "status": "ok",
-        "message": "The server is healthy."
+        "message": "The location server is healthy."
     }
+    return response, 200, {'Access-Control-Allow-Origin': '*'}
 
 @app.route('/locations/v1/api/stores/near', methods=['GET'])
 def storesNearby():
