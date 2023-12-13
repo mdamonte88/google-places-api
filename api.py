@@ -1,47 +1,50 @@
 from flask import Flask, request
-
-# import os
-from pprint import pprint
-import googlemaps #pip install googlemaps
+from flask_cors import CORS
+from app.routes import stores_nearby, bars_nearby, footballfields_nearby, pharmacies_nearby
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
+CORS(app, resources={r"/locations/v1/api/*": {"origins": ["https://www.gomarket.com.uy", "https://localdashboard.gomarket.com.uy", "https://local.gomarket.com.uy"]}})
+
+
+app.config["DEBUG"] = False
 
 API_KEY = open('API_KEY.txt').read()
-map_client = googlemaps.Client(API_KEY)
 
-def miles_to_meters(miles):
-    try:
-        print('Meters', miles * 1.609,344)
-        return miles * 1.609,344
-    except:
-        return 0
-
-def get_place_info(location, distance):
-    try: 
-        response = map_client.places_nearby(
-            type='restaurant|pharmacy', #type=food
-            location=location,
-            radius = distance,
-        )
-        results = response.get('results')
-        print("Termine")
-        return results
-    except Exception as e:
-        print(e)
-        return None
-
-@app.route('/', methods=['GET'])
+@app.route('/locations/v1/api', methods=['GET'])
 def home():
     return "El servidor está inicializado en el puerto ????"
-    
-@app.route('/stores/near', methods=['GET'])
+
+@app.route('/locations/v1/api/health', methods=['GET'])
+def health():
+    response = {
+        "status": "ok",
+        "message": "The location server is healthy."
+    }
+    return response, 200, {'Access-Control-Allow-Origin': '*'}
+
+@app.route('/locations/v1/api/stores/near', methods=['GET'])
 def storesNearby():
     latitud = request.args.get('latitud')
     longitud = request.args.get('longitud')
-    # location = ('-34.8764965,-56.0947794')
-    location = (latitud,longitud)
-    distance = miles_to_meters(800)
-    return get_place_info(location, distance)
+    return stores_nearby(latitud, longitud)
+
+@app.route('/locations/v1/api/bars/near', methods=['GET'])
+def barsNearby():
+    print('##### 1')
+    latitud = request.args.get('latitud')
+    longitud = request.args.get('longitud')
+    return bars_nearby(latitud, longitud)
+
+@app.route('/locations/v1/api/footballfields/near', methods=['GET'])
+def footballfieldsNearby():
+    latitud = request.args.get('latitud')
+    longitud = request.args.get('longitud')
+    return footballfields_nearby(latitud, longitud)
+
+@app.route('/locations/v1/api/pharmacies/near', methods=['GET'])
+def pharmaciesNearby():
+    latitud = request.args.get('latitud')
+    longitud = request.args.get('longitud')
+    return pharmacies_nearby(latitud, longitud)
 
 app.run()

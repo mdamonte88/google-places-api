@@ -1,0 +1,39 @@
+.idea
+__pycache__/
+*.log
+*.pot
+*.pyc
+
+### LocalSetting
+local_settings.*
+*.sqlite3
+
+### Media Folders
+media
+static
+private
+antenv
+
+
+### Unkowns Files
+coverage.xml
+.coverage
+htmlcov
+TEST-*.xml
+.DS_Store
+coco_api_django.iml
+dev-request.http
+local.cocomercado.com
+localvue.cocomercado.com
+pro-request.http
+
+### Test
+test-request.http
+test.html
+test.json
+test.py
+
+### Configuration Files
+API_KEY.txt
+cert.pem
+key.pem
