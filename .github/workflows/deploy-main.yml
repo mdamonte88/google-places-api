@@ -1,0 +1,41 @@
+name: Deploy Google Places API
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+
+            cd /var/www/googlemaps_backend/google-places-api
+
+            git pull origin main
+
+            source /var/www/googlemaps_backend/venv/bin/activate
+
+            pip install -r requirements.txt
+
+            if pm2 describe "locations.gomarket.com.uy" >/dev/null 2>&1; then
+              pm2 restart "locations.gomarket.com.uy" --update-env
+            else
+              pm2 start api.py \
+                --name "locations.gomarket.com.uy" \
+                --interpreter /var/www/googlemaps_backend/venv/bin/python3
+            fi
+
+            pm2 save
