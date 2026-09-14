@@ -3,8 +3,16 @@ from flask_cors import CORS
 from app.routes import stores_nearby, bars_nearby, footballfields_nearby, pharmacies_nearby
 
 app = Flask(__name__)
-CORS(app, resources={r"/locations/v1/api/*": {"origins": ["https://www.gomarket.com.uy", "https://localdashboard.gomarket.com.uy", "https://local.gomarket.com.uy"]}})
-
+CORS(app, resources={
+    r"/locations/v1/api/*": {
+        "origins": [
+            "https://gomarket.com.uy",
+            "https://www.gomarket.com.uy",
+            "https://localdashboard.gomarket.com.uy",
+            "https://local.gomarket.com.uy",
+        ]
+    }
+})
 
 app.config["DEBUG"] = False
 
@@ -20,7 +28,7 @@ def health():
         "status": "ok",
         "message": "The location server is healthy."
     }
-    return response, 200, {'Access-Control-Allow-Origin': '*'}
+    return response, 200
 
 @app.route('/locations/v1/api/stores/near', methods=['GET'])
 def storesNearby():

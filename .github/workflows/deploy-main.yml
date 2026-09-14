@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Deploy
         uses: appleboy/ssh-action@v1
         with:
@@ -24,18 +21,20 @@ jobs:
 
             cd /var/www/googlemaps_backend/google-places-api
 
-            git pull origin main
+            test "$(git branch --show-current)" = "main"
+            test -z "$(git status --porcelain)"
+            git pull --ff-only origin main
 
-            source /var/www/googlemaps_backend/venv/bin/activate
-
-            pip install -r requirements.txt
+            /var/www/googlemaps_backend/venv/bin/python -m pip install -r requirements.txt
 
             if pm2 describe "locations.gomarket.com.uy" >/dev/null 2>&1; then
-              pm2 restart "locations.gomarket.com.uy" --update-env
+              pm2 restart "locations.gomarket.com.uy" \
+                --interpreter /var/www/googlemaps_backend/venv/bin/python \
+                --update-env
             else
               pm2 start api.py \
                 --name "locations.gomarket.com.uy" \
-                --interpreter /var/www/googlemaps_backend/venv/bin/python3
+                --interpreter /var/www/googlemaps_backend/venv/bin/python
             fi
 
             pm2 save
