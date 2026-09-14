@@ -56,3 +56,7 @@ Create the `API_KEY.txt` example:
 
 6. Run the server
 pm2 start api.py --name locations.gomarket.com.uy --interpreter python3
+
+## Production deployment
+
+See [docs/deployment.md](docs/deployment.md) for the production deployment, SSH, PM2, Nginx, CORS, and troubleshooting runbook.
