@@ -12,7 +12,7 @@ pip install googlemaps
 pip show flask
 
 # Improve the installation from a requirement file
-python install -r requirements.txt
+pip install -r requirements.txt
 
 # Alternative
 

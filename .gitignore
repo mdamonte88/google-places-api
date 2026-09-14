@@ -1,39 +1,27 @@
-.idea
+# Python
 __pycache__/
+*.py[cod]
 *.log
-*.pot
-*.pyc
 
-### LocalSetting
-local_settings.*
-*.sqlite3
+# Virtual environments
+venv/
+venvs/
+.env/
+.venv/
 
-### Media Folders
-media
-static
-private
-antenv
-
-
-### Unkowns Files
-coverage.xml
-.coverage
-htmlcov
-TEST-*.xml
-.DS_Store
-coco_api_django.iml
-dev-request.http
-local.cocomercado.com
-localvue.cocomercado.com
-pro-request.http
-
-### Test
-test-request.http
-test.html
-test.json
-test.py
-
-### Configuration Files
+# Local configuration / secrets
 API_KEY.txt
-cert.pem
-key.pem
+.env
+.env.*
+*.pem
+
+# Test / coverage
+.coverage
+coverage.xml
+htmlcov/
+TEST-*.xml
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
